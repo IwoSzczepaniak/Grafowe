@@ -1,2 +1,3 @@
 Jacka_nie_lubie
 g1
+./pythonGrafowe1/g2
