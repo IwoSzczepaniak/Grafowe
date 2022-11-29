@@ -1,6 +1,12 @@
+from check import check_connectivity_solution_no_grid100x100
 from matrix_graph import matrix_graph
-from check import check_flow_solution_no_grid100x100
-# implement solution here
+import copy
+
+# idea
+# First of all, create graph with all weights equals to 1.
+# Randomise one vertex and treat it as a source. Then iterate through all other vertices and treat them as sinks.
+# On every step use max_flow algorithm(Ford-Fulkerson) on graph - it will find solution.
+
 
 def dfs_visit(G, V, P, i):
     V[i] = True
@@ -35,13 +41,16 @@ def Ford_Fulk(G, s, t):
     return max_flow
 
 
-
-def solution(V, L):
+def solution(V,L):
     matrix_g = matrix_graph(V, L)
-    return Ford_Fulk(matrix_g, 0, V-1)
+    result = 0
+    for vertex in range(1, V):
+        g_copy = copy.deepcopy(matrix_g)
+        result = max(result, Ford_Fulk(g_copy, 0, vertex))
+    return result
+    # return result
 
 
 # -----------------------------------------------------------------------------------------------------------------#
-
 if __name__ == "__main__":
-    check_flow_solution_no_grid100x100(solution)
+    check_connectivity_solution_no_grid100x100(solution)

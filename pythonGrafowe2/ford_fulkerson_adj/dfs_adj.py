@@ -1,15 +1,5 @@
-from dimacs import *
-import os, sys, time
-
-# implement solution here
-
-
-def adjacency_list(V, L):
-    adj_graph = [[] for _ in range(V)]
-    for (x,y,c) in L:
-        adj_graph[x-1].append([y-1, c])
-        adj_graph[y-1].append([x-1, 0])
-    return adj_graph
+from adjacency_list import adjacency_list
+from check import check_flow_solution
 
 
 def dfs_visit(G, V, P, i):
@@ -63,38 +53,6 @@ def solution(V, L):
 
 
 # -----------------------------------------------------------------------------------------------------------------#
-sys.setrecursionlimit(10**9)
-# dir_path = r'C:\Users\iwosz\PycharmProjects\pythonGrafowe2\flow'
-dir_path = 'C:/Users/iwosz/PycharmProjects/pythonGrafowe2/flow/'
-# list file and directories
-res = os.listdir(dir_path)
-beg = time.time()
-good = 0
-all = 0
-for el in res:
-    start = time.time()
-    name = dir_path + el
-    (V, L) = loadDirectedWeightedGraph(name)
 
-    moja_funkcja = solution(V, L)
-    poprawny_wynik = int(readSolution(name))
-    print()
-    print("-------------------------")
-    if moja_funkcja == poprawny_wynik:
-        good += 1
-        print("Wynik poprawny dla:", el)
-    else:
-        print("Wynik niepoprawny dla:", el)
-        print("moja funkcja:", moja_funkcja)
-        print("poprawny:", poprawny_wynik)
-    all += 1
-
-    end = time.time()
-    print("Orientacyjny czas wykonania:", end - start,"s")
-    print("-------------------------")
-    print()
-
-        
-print("+++++++++++++++++++++++++++++++")
-print(good, "/", all, "poprawnych odpowiedzi")
-print("Łączny czas:",time.time() - beg)
+if __name__ == "__main__":
+    check_flow_solution(solution)
