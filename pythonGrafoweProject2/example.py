@@ -1,17 +1,12 @@
 from data import runtests
 
 
-def check_connectivity(deleted_nodes, original_graph):
-    visited = set()
-    stack = [deleted_nodes[0]]
-    while stack:
-        node = stack.pop()
-        if node not in visited:
-            visited.add(node)
-            for neighbor in deleted_nodes:
-                if neighbor in original_graph[node] and neighbor not in visited:
-                    stack.append(neighbor)
-    return len(visited) == len(deleted_nodes)
+def is_clique(deleted_nodes, original_graph):
+    for node1 in deleted_nodes:
+        for node2 in deleted_nodes:
+            if node1 != node2 and node2 not in original_graph[node1]:
+                return False
+    return True
 
 
 def my_solve(N, channels):
@@ -24,9 +19,8 @@ def my_solve(N, channels):
         original_graph[b].add(a)
 
     deleted_nodes = []
-
+    
     sorted_graph = sorted(graph.items(), key=lambda x: len(x[1]), reverse=True)
-    i = 0
     if not channels: return 1
 
     while len(sorted_graph[0][1]) > 0:
@@ -37,10 +31,9 @@ def my_solve(N, channels):
             if node_to_delete in neighbors:
                 neighbors.remove(node_to_delete)
         sorted_graph = sorted(graph.items(), key=lambda x: len(x[1]), reverse=True)
-        i += 1
 
-    if check_connectivity(deleted_nodes, original_graph):
-        return i
+    if is_clique(deleted_nodes, original_graph):
+        return len(deleted_nodes)
     else:
         return None
 
